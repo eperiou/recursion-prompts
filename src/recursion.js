@@ -88,15 +88,30 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
-
+    if(n===1){
+      return true
+    }else if(n<1){
+      return false
+    }
+    return powerOfTwo(n/2)
 };
 
 // 9. Write a function that accepts a string a reverses it.
 var reverse = function(string) {
+
+    return  string.length >  1 ? reverse(string.slice(1)) + string[0]: string[0];
+
+
 };
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
+  string = string.toLowerCase().trim();
+  if(string[0]!==string[string.length-1]){
+    return false;
+  }
+  return string.length > 1? palindrome(string.slice(1,string.length-1))  : true;
+
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
