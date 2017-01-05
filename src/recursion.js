@@ -370,19 +370,31 @@ var letterTally = function(str, obj) {
 // Example: compress([1, 2, 2, 3, 4, 4, 5, 5, 5]) // [1, 2, 3, 4, 5]
 // Example: compress([1, 2, 2, 3, 4, 4, 2, 5, 5, 5, 4, 4]) // [1, 2, 3, 4, 2, 5, 4]
 var compress = function(list) {
-
+  if(list[1]===undefined)return [list[0]];
+  if(list.length>1){
+    return list[0]!==list[1] ? [list[0]].concat(compress(list.slice(1))):compress(list.slice(1));
+  }
 };
 
 // 32. Augument every element in a list with a new value where each element is an array
 // itself.
 // Example: augmentElements([[],[3],[7]], 5); // [[5],[3,5],[7,5]]
 var augmentElements = function(array, aug) {
+  var ind = arguments[2]===undefined ? 0 : arguments[2];
+  array[ind].push(aug);
+  ind++;
+  return ind<array.length ? augmentElements(array,aug,ind): array;
 };
 
 // 33. Reduce a series of zeroes to a single 0.
 // minimizeZeroes([2,0,0,0,1,4]) // [2,0,1,4]
 // minimizeZeroes([2,0,0,0,1,0,0,4]) // [2,0,1,0,4]
 var minimizeZeroes = function(array) {
+  if(array.length===1) return array[0];
+  if(array[0]===0){
+    return array[0]!==array[1] ? [array[0]].concat(minimizeZeroes(array.slice(1))) : minimizeZeroes(array.slice(1));
+  }
+  return[array[0]].concat(minimizeZeroes(array.slice(1)));
 };
 
 // 34. Alternate the numbers in an array between positive and negative regardless of
@@ -390,13 +402,50 @@ var minimizeZeroes = function(array) {
 // alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4]
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
 var alternateSign = function(array) {
+  var ind = arguments[1]===undefined ? 0:arguments[1];
+  if(array.length===0)return;
+
+  if(ind%2===0){
+    ind++
+    if(array[0]<0){
+      array[0]=array[0]*-1;
+    }
+    return array.length>1 ? [array[0]].concat(alternateSign(array.slice(1),ind)):[array[0]];
+    ///positive indexes
+  }else{
+    ind++
+    ////negative indexes
+    if(array[0] > 0){
+      array[0]=array[0]*-1;
+    }
+    return array.length>1 ? [array[0]].concat(alternateSign(array.slice(1),ind)):[array[0]];
+
+  }
 };
 
 // 35. Given a string, return a string with digits converted to their word equivalent.
 // Assume all numbers are single digits (less than 10).
 // numToText("I have 5 dogs and 6 ponies"); // "I have five dogs and six ponies"
 var numToText = function(str) {
+  var val = str[0];
+  var nums = {
+    '1':"one",
+    '2':"two",
+    '3':"three",
+    '4':"four",
+    '5':"five",
+    '6':"six",
+    '7':"seven",
+    '8':"eight",
+    '9':"nine",
+    '0':"zero"
+  }
+  if(val in nums){
+    val = nums[val];
+  }
+  return str.length > 1 ? val + numToText(str.slice(1)) : val;
 };
+
 
 // *** EXTRA CREDIT ***
 
@@ -409,6 +458,7 @@ var tagCount = function(tag, node) {
 // console.log(binarySearch(5)) will return '5'
 
 var binarySearch = function(array, target, min, max) {
+  console.log(arguments)
 };
 
 // 38. Write a merge sort function.
