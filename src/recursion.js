@@ -278,6 +278,16 @@ var replaceKeysInObj = function(obj, key, newKey) {
 // fibonacci(5);  // [0, 1, 1, 2, 3, 5]
 // Note:  The 0 is not counted.
 var fibonacci = function(n) {
+  if(n<0) return null;
+  if (n===0) return null;
+  if(n==1) return [0,1];
+  else{
+    x = fibonacci(n-1)
+    x.push(x[x[x.length-2]+x[x.length-1]]);
+
+    return x;
+  }
+
 };
 
 // 25. Return the Fibonacci number located at index n of the Fibonacci sequence.
@@ -286,17 +296,25 @@ var fibonacci = function(n) {
 // nthFibo(7); // 13
 // nthFibo(3); // 2
 var nthFibo = function(n) {
+  if(n<0) return null;
+  if(n==0) return 0;
+  if(n==1) return 1;
+  return (nthFibo(n-2)+nthFibo(n-1));
 };
 
 // 26. Given an array of words, return a new array containing each word capitalized.
 // var words = ['i', 'am', 'learning', 'recursion'];
 // capitalizedWords(words); // ['I', 'AM', 'LEARNING', 'RECURSION']
 var capitalizeWords = function(input) {
+  return input.length > 1?  [input[0].toUpperCase()].concat(capitalizeWords(input.slice(1))) : [input[0].toUpperCase()];
 };
 
 // 27. Given an array of strings, capitalize the first letter of each index.
 // capitalizeFirst(['car', 'poop', 'banana']); // ['Car', 'Poop', 'Banana']
 var capitalizeFirst = function(array) {
+  var word = array[0][0].toUpperCase() + array[0].slice(1);
+
+  return array.length > 1?  [word].concat(capitalizeFirst(array.slice(1))) : [word];
 };
 
 // 28. Return the sum of all even numbers in an object containing nested objects.
@@ -309,16 +327,41 @@ var capitalizeFirst = function(array) {
 // };
 // nestedEvenSum(obj1); // 10
 var nestedEvenSum = function(obj) {
+  var sum = 0;
+  for(var key in obj){
+    if(typeof obj[key]==='object'){
+      sum+= nestedEvenSum(obj[key]);
+    }else if(obj[key]%2===0){
+      sum+= obj[key];
+    }
+  }
+  return sum;
 };
 
 // 29. Flatten an array containing nested arrays.
 // Example: flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
 var flatten = function(arrays) {
+  if(arrays.length ===0) return [];
+
+  if(typeof arrays[0]==='number'){
+    return arrays.length > 1 ?  [arrays[0]].concat(flatten(arrays.slice(1)))  : [arrays[0]];
+  }else{
+    return arrays.length > 1 ? flatten(arrays[0]).concat(flatten(arrays.slice(1))):flatten(arrays[0])
+  }
 };
 
 // 30. Given a string, return an object containing tallies of each letter.
 // letterTally('potato'); // {'p':1, 'o':2, 't':2, 'a':1}
 var letterTally = function(str, obj) {
+  var object= obj===undefined ? {} : obj;
+
+  if(str[0] in object){
+    object[str[0]]++;
+  }else{
+    object[str[0]]=1;
+  }
+  return str.length > 1 ? letterTally(str.slice(1),object): object;
+
 };
 
 // 31. Eliminate consecutive duplicates in a list.  If the list contains repeated
@@ -327,6 +370,7 @@ var letterTally = function(str, obj) {
 // Example: compress([1, 2, 2, 3, 4, 4, 5, 5, 5]) // [1, 2, 3, 4, 5]
 // Example: compress([1, 2, 2, 3, 4, 4, 2, 5, 5, 5, 4, 4]) // [1, 2, 3, 4, 2, 5, 4]
 var compress = function(list) {
+
 };
 
 // 32. Augument every element in a list with a new value where each element is an array
